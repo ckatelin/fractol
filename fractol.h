@@ -20,3 +20,5 @@ typedef	struct s_fractol
 }				t_fractol;
 
 int	close_window(int key, t_fractol *fractol);
+t_complex init_complex(double re, double im);
+t_fractol *all_fractols(t_fractol *fractol, int max_iteration, t_complex min, t_complex max, t_complex factor);
