@@ -38,12 +38,9 @@ t_fractol	*init_fractol(t_fractol *fractol)
 	fractol->pix_buf = (int *)mlx_get_data_addr(fractol->image, &bits_per_pix, &line_size, &endian);
 	return(fractol);
 }
+
 int main(void)
 {
-
-	int bits_per_pix;
-	int line_size;
-	int endian;
 	int i = 0;
 	int j = 0;
 	int x;
@@ -63,13 +60,6 @@ int main(void)
 	t_fractol *fractol;
 
 	fractol = init_fractol(fractol);
-/*	if (!fractol)
-		fractol = (t_fractol *)malloc(sizeof(fractol));
-	fractol->connect = mlx_init();
-	fractol->window = mlx_new_window(fractol->connect, 1920, 1080, "fractol");
-	fractol->image = mlx_new_image(fractol->connect, 1920, 1080);
-	fractol->pix_buf = (int *)mlx_get_data_addr(fractol->image, &bits_per_pix, &line_size, &endian);
-*/
 
 	max_iteration = 50;
 	min = init_complex(-2.0, -2.0);
