@@ -8,11 +8,11 @@ void			keys(t_fractol *fractol)
 //	mlx_hook(fractol->window, 5, 0, mouse_release, fractol);
 //	mlx_hook(fractol->window, 6, 0, mouse_move, fractol);
 //	mlx_hook(fractol->window, 12, 0, expose, fractol);
-//	mlx_hook(fractol->window, 2, 0, key_hook, fractol);
+	mlx_hook(fractol->mlx.window, 2, 0, key_hook, fractol);
 //	mlx_hook(fractol->window, 6, 0, (int (*)())mouse_move, fractol);
 //	mlx_hook(fractol->window, 4, 0, mouse_event, fractol);
 //	mlx_hook(fractol->window, 17, 0, (int (*)())exit, fractol);
-	mlx_hook(fractol->window, 2, 0, close_window, fractol);
+	mlx_hook(fractol->mlx.window, 2, 0, close_window, fractol);
 }
 
 t_complex init_complex(double re, double im)
@@ -26,55 +26,52 @@ t_complex init_complex(double re, double im)
 
 t_fractol	*init_fractol(t_fractol *fractol)
 {
+	fractol->min = init_complex(-4.0, -2.0); //цифры могут быть другими
+	fractol->max.re = 5.0; //цифры могут быть другими
+	fractol->max.im = fractol->min.im + (fractol->max.re - fractol->min.re) * HEIGHT / WIDTH;
+	fractol->zoom = 25;
+//	fractol->k = init_complex(-0.9, 0.3);
+	fractol->max_iter = 50;
+	fractol->r = 16;
+	fractol->g = 8;
+	fractol->b = 0;
+	fractol->factor = init_complex(
+		(fractol->max.re - fractol->min.re) / (WIDTH - 1),
+		(fractol->max.im - fractol->min.im) / (HEIGHT - 1));
+	return(fractol);
+}
+
+t_fractol	*init_mlx(t_fractol *fractol)
+{
 	int bits_per_pix;
 	int line_size;
 	int endian;
 
-//	if (!fractol)
-//		fractol = (t_fractol *)malloc(sizeof(fractol));
-	fractol->connect = mlx_init();
-	fractol->window = mlx_new_window(fractol->connect, 1920, 1080, "fractol");
-	fractol->image = mlx_new_image(fractol->connect, 1920, 1080);
-	fractol->pix_buf = (int *)mlx_get_data_addr(fractol->image, &bits_per_pix, &line_size, &endian);
+	if(!fractol)
+		fractol = (t_fractol *)malloc(sizeof(fractol));
+	fractol->mlx.connect = mlx_init();
+	fractol->mlx.window = mlx_new_window(fractol->mlx.connect, 1920, 1080, "fractol");
+	fractol->mlx.image = mlx_new_image(fractol->mlx.connect, 1920, 1080);
+	fractol->mlx.pix_buf = (int *)mlx_get_data_addr(fractol->mlx.image, &bits_per_pix, &line_size, &endian);
 	return(fractol);
 }
 
 int main(void)
 {
-	int i = 0;
-	int j = 0;
-	int x;
-	int y;
-	int iteration;
-	t_complex z;
-	double t;
-	int red;
-	int green;
-	int blue;
-	int max_iteration;
-	t_complex min;
-	t_complex max;
-	t_complex factor;
-	t_complex c;
-	int colour;
 	t_fractol *fractol;
+	int bits_per_pix;
+	int line_size;
+	int endian;
+	int k = 0;
 
-
-	if (!fractol)
-		fractol = (t_fractol *)malloc(sizeof(fractol));
+	fractol = init_mlx(fractol);
 	fractol = init_fractol(fractol);
-
-	max_iteration = 50;
-	min = init_complex(-2.0, -2.0);
-	max.re = 5.0;
-	max.im = min.im + (max.re - min.re) * HEIGHT / WIDTH;
-
-	factor = init_complex(
-	(max.re - min.re) / (WIDTH - 1),
-	(max.im - min.im) / (HEIGHT - 1));
-	fractol = all_fractols(fractol, max_iteration, min, max, factor);
-	mlx_put_image_to_window(fractol->connect, fractol->window, fractol->image, 0, 0);
-	keys(fractol);
-	mlx_loop(fractol->connect);
+//	fractol = all_fractols(fractol);
+//	keys(fractol);
+	mlx_hook(fractol->mlx.window, 2, 0, key_hook, fractol);
+	mlx_hook(fractol->mlx.window, 2, 0, close_window, fractol);
+	fractol = all_fractols(fractol);
+	mlx_put_image_to_window(fractol->mlx.connect, fractol->mlx.window, fractol->mlx.image, 0, 0);
+	mlx_loop(fractol->mlx.connect);
 	return (0);
 }
