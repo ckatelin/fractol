@@ -1,4 +1,4 @@
-MLX_FLAGS	= -lmlx -framework OpenGL -framework AppKit
+MLX_FLAGS	= -L./minilibx_macos -lmlx -framework OpenGL -framework AppKit
 NAME = fractol
 
 all: $(NAME)

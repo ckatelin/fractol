@@ -30,8 +30,8 @@ t_fractol	*init_fractol(t_fractol *fractol)
 	int line_size;
 	int endian;
 
-	if (!fractol)
-		fractol = (t_fractol *)malloc(sizeof(fractol));
+//	if (!fractol)
+//		fractol = (t_fractol *)malloc(sizeof(fractol));
 	fractol->connect = mlx_init();
 	fractol->window = mlx_new_window(fractol->connect, 1920, 1080, "fractol");
 	fractol->image = mlx_new_image(fractol->connect, 1920, 1080);
@@ -59,6 +59,9 @@ int main(void)
 	int colour;
 	t_fractol *fractol;
 
+
+	if (!fractol)
+		fractol = (t_fractol *)malloc(sizeof(fractol));
 	fractol = init_fractol(fractol);
 
 	max_iteration = 50;
