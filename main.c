@@ -69,9 +69,11 @@ int main(void)
 //	fractol = all_fractols(fractol);
 //	keys(fractol);
 	mlx_hook(fractol->mlx.window, 2, 0, key_hook, fractol);
-	mlx_hook(fractol->mlx.window, 2, 0, close_window, fractol);
+//	mlx_hook(fractol->mlx.window, 2, 0, close_window, fractol);
 	fractol = all_fractols(fractol);
 	mlx_put_image_to_window(fractol->mlx.connect, fractol->mlx.window, fractol->mlx.image, 0, 0);
+	mlx_hook(fractol->mlx.window, 2, 0, key_hook, fractol);
+//	mlx_put_image_to_window(fractol->mlx.connect, fractol->mlx.window, fractol->mlx.image, 0, 0);
 	mlx_loop(fractol->mlx.connect);
 	return (0);
 }

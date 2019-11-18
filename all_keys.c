@@ -197,6 +197,12 @@ void	key_hook_control(t_fractol *fractol, int key)
 		de_zoom(fractol);
 	if (key == 24)
 		zoom(fractol);
+	printf("%d\n", fractol->max_iter);
+	if (key == 53)
+	{
+		mlx_destroy_window(fractol->mlx.connect, fractol->mlx.window);
+		exit (0);
+	}
 //	if (key == 53)
 //		exit(0);
 /*	if (key == 49 && (fractol->id == 2 || fractol->id == 5))
